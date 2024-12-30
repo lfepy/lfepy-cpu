@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Local Feature Descriptors.iml" filepath="$PROJECT_DIR$/.idea/Local Feature Descriptors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lfepy-cpu.iml" filepath="$PROJECT_DIR$/.idea/lfepy-cpu.iml" />
     </modules>
   </component>
 </project>
