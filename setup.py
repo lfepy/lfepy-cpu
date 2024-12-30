@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='lfepy-cpu',
+    name='lfepy',
     version='1.0.0',
     author='Dr. Prof. Khalid M. Hosny, MSc. Mahmoud A. Mohamed, Dr. Essa E. Almazroei',
     author_email='lfepy@gmail.com',
     description='lfepy is a Python package for local feature extraction.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/lfepy/lfepy',  # Replace with your repository URL
+    url='https://github.com/lfepy/lfepy-cpu',  # Replace with your repository URL
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
