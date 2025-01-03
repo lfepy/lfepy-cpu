@@ -56,10 +56,13 @@ def construct_Gabor_filters(num_of_orient, num_of_scales, size1, fmax=0.25,
     else:
         raise ValueError("The parameter determining the size of the filters is not valid.")
 
-    # Construct Gabor filter bank
     sigma_x = size1[1]
     sigma_y = size1[0]
 
+    # Create meshgrid for x and y coordinates
+    X, Y = np.meshgrid(np.arange(-sigma_x, sigma_x), np.arange(-sigma_y, sigma_y))
+
+    # Vectorize the filter creation
     for u in range(num_of_scales):  # for each scale
         fu = fmax / (separation ** u)
         alfa = fu / gamma
@@ -67,18 +70,16 @@ def construct_Gabor_filters(num_of_orient, num_of_scales, size1, fmax=0.25,
 
         for v in range(num_of_orient):  # for each orientation
             theta_v = (v / num_of_orient) * np.pi
-            gabor = np.zeros((2 * sigma_y, 2 * sigma_x), dtype=np.complex128)
 
-            for x in range(-sigma_x, sigma_x):
-                for y in range(-sigma_y, sigma_y):
-                    xc = x * np.cos(theta_v) + y * np.sin(theta_v)
-                    yc = -x * np.sin(theta_v) + y * np.cos(theta_v)
-                    gabor[y + sigma_y, x + sigma_x] = (
-                            (fu ** 2 / (np.pi * gamma * ni)) *
-                            np.exp(-(alfa ** 2 * xc ** 2 + beta ** 2 * yc ** 2)) *
-                            np.exp(1j * 2 * np.pi * fu * xc)
-                    )
+            # Rotate coordinates using the orientation angle
+            X_rot = X * np.cos(theta_v) + Y * np.sin(theta_v)
+            Y_rot = -X * np.sin(theta_v) + Y * np.cos(theta_v)
 
+            # Compute the Gabor filter using vectorized operations
+            gabor = (fu ** 2 / (np.pi * gamma * ni)) * np.exp(
+                -(alfa ** 2 * X_rot ** 2 + beta ** 2 * Y_rot ** 2)) * np.exp(1j * 2 * np.pi * fu * X_rot)
+
+            # Ensure the filter size matches the expected size
             filter_bank['spatial'][u, v] = gabor
             filter_bank['freq'][u, v] = np.fft.fft2(gabor)
 

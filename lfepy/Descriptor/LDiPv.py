@@ -70,9 +70,10 @@ def LDiPv(image, **kwargs):
 
     # Generate the LDiPv descriptor for each pixel
     imgDesc = np.zeros_like(image)
-    for r in range(image.shape[0]):
-        codebit = np.reshape(bit8array[r, :, ::-1], (image.shape[1], -1))
-        imgDesc[r, :] = np.array([int(''.join(map(str, row.astype(np.uint8))), 2) for row in codebit])
+    flipped_bit8array = np.flip(bit8array, axis=2)  # Reverse the third dimension
+    reshaped_bit8array = np.reshape(flipped_bit8array, (image.shape[0], image.shape[1], -1))
+    power_matrix = np.power(2, np.arange(reshaped_bit8array.shape[2] - 1, -1, -1))
+    imgDesc = np.dot(reshaped_bit8array, power_matrix)
 
     # Define the unique bins for the histogram
     uniqueBin = np.array([7, 11, 13, 14, 19, 21, 22, 25, 26, 28, 35, 37, 38, 41, 42, 44, 49, 50, 52, 56, 67, 69,
