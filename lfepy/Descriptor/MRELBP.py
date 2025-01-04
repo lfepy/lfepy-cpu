@@ -130,14 +130,18 @@ def MRELBP(image, **kwargs):
     # Compute MRELBP histogram
     MRELBP_hist = []
     for i in range(4):
-        Joint_CINIRD = np.zeros((options['numLBPbins'], options['numLBPbins'], 2))
-        CImg = imgDesc[i]['fea']['CImg'].flatten()
-        NILBPImage = imgDesc[i]['fea']['NILBPImage'].flatten()
-        RDLBPImage = imgDesc[i]['fea']['RDLBPImage'].flatten()
-        for ih in range(len(NILBPImage)):
-            Joint_CINIRD[NILBPImage[ih], RDLBPImage[ih], int(CImg[ih] - 1)] += 1
+        Joint_CINIRD = np.zeros((options['numLBPbins'], options['numLBPbins'], 2), dtype=np.float32)
+        # Flatten the arrays and move them to GPU
+        CImg = np.array(imgDesc[i]['fea']['CImg'], dtype=np.int32).flatten()
+        NILBPImage = np.array(imgDesc[i]['fea']['NILBPImage'], dtype=np.int32).flatten()
+        RDLBPImage = np.array(imgDesc[i]['fea']['RDLBPImage'], dtype=np.int32).flatten()
+        indices = np.stack((NILBPImage, RDLBPImage, CImg - 1), axis=-1)
+        np.add.at(Joint_CINIRD, (indices[:, 0], indices[:, 1], indices[:, 2]), 1)
+        # Flatten the result for concatenation
         Joint_CINIRD = Joint_CINIRD.flatten()
+        # Append the histogram to the MRELBP_hist array
         MRELBP_hist = np.hstack((MRELBP_hist, Joint_CINIRD))
+
     if 'mode' in options and options['mode'] == 'nh':
         MRELBP_hist = MRELBP_hist / np.sum(MRELBP_hist)
 

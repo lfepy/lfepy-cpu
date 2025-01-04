@@ -127,11 +127,13 @@ def MBC(image, **kwargs):
     # Compute MBC histogram
     MBC_hist = []
     for s in range(len(imgDesc)):
-        imgReg = imgDesc[s]['fea']
-        for i, bin_val in enumerate(options['binVec'][s]):
-            hh = np.sum([imgReg == bin_val])
-            MBC_hist.append(hh)
+        imgReg = np.array(imgDesc[s]['fea'])
+        binVec = np.array(options['binVec'][s])
+        # Vectorized counting for each bin value
+        hist, _ = np.histogram(imgReg, bins=np.append(binVec, np.inf))
+        MBC_hist.extend(hist)
     MBC_hist = np.array(MBC_hist)
+
     if 'mode' in options and options['mode'] == 'nh':
         MBC_hist = MBC_hist / np.sum(MBC_hist)
 

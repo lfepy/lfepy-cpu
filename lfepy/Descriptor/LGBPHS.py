@@ -72,11 +72,13 @@ def LGBPHS(image, **kwargs):
     # Compute LGBPHS histogram
     LGBPHS_hist = []
     for s in range(len(imgDesc)):
-        imgReg = imgDesc[s]['fea']
-        for i, bin_val in enumerate(options['binVec'][s]):
-            hh = np.sum([imgReg == bin_val])
-            LGBPHS_hist.append(hh)
+        imgReg = np.array(imgDesc[s]['fea'])
+        binVec = np.array(options['binVec'][s])
+        # Vectorized counting for each bin value
+        hist, _ = np.histogram(imgReg, bins=np.append(binVec, np.inf))
+        LGBPHS_hist.extend(hist)
     LGBPHS_hist = np.array(LGBPHS_hist)
+
     if 'mode' in options and options['mode'] == 'nh':
         LGBPHS_hist = LGBPHS_hist / np.sum(LGBPHS_hist)
 

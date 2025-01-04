@@ -107,8 +107,8 @@ def LDTP(image, **kwargs):
 
     # Compute LDTP histogram
     LDTP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LDTP_hist[i] = np.sum([imgDesc == bin_val])
+    LDTP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LDTP_hist = LDTP_hist / np.sum(LDTP_hist)
 

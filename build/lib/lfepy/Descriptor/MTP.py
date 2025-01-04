@@ -63,18 +63,23 @@ def MTP(image, **kwargs):
     Pmtp = np.double(ImgIntensity > (medianMat + t).reshape(-1, 1))
     Nmtp = np.double(ImgIntensity < (medianMat - t).reshape(-1, 1))
 
-    imgDesc = [{'fea': np.array([int(''.join(map(str, row.astype(np.uint8))), 2) for row in Pmtp]).reshape(rSize, cSize)},
-               {'fea': np.array([int(''.join(map(str, row.astype(np.uint8))), 2) for row in Nmtp]).reshape(rSize, cSize)}]
+    imgDesc = [
+        {'fea': np.dot(Pmtp.astype(np.uint8), 1 << np.arange(Pmtp.shape[1] - 1, -1, -1)).reshape(rSize, cSize)},
+        {'fea': np.dot(Nmtp.astype(np.uint8), 1 << np.arange(Nmtp.shape[1] - 1, -1, -1)).reshape(rSize, cSize)}
+    ]
+
     options['binVec'] = [np.arange(256), np.arange(256)]
 
     # Compute MTP histogram
     MTP_hist = []
     for s in range(len(imgDesc)):
-        imgReg = imgDesc[s]['fea']
-        for i, bin_val in enumerate(options['binVec'][s]):
-            hh = np.sum([imgReg == bin_val])
-            MTP_hist.append(hh)
+        imgReg = np.array(imgDesc[s]['fea'])
+        binVec = np.array(options['binVec'][s])
+        # Vectorized counting for each bin value
+        hist, _ = np.histogram(imgReg, bins=np.append(binVec, np.inf))
+        MTP_hist.extend(hist)
     MTP_hist = np.array(MTP_hist)
+
     if 'mode' in options and options['mode'] == 'nh':
         MTP_hist = MTP_hist / np.sum(MTP_hist)
 

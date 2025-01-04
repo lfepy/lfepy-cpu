@@ -77,8 +77,8 @@ def LDiP(image, **kwargs):
 
     # Compute LDiP histogram
     LDiP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LDiP_hist[i] = np.sum([imgDesc == bin_val])
+    LDiP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LDiP_hist = LDiP_hist / np.sum(LDiP_hist)
 

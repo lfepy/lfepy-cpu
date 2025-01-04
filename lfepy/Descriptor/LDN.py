@@ -74,11 +74,13 @@ def LDN(image, **kwargs):
     # Compute LDN histogram
     LDN_hist = []
     for s in range(len(imgDesc)):
-        imgReg = imgDesc[s]['fea']
-        for i, bin_val in enumerate(options['binVec'][s]):
-            hh = np.sum([imgReg == bin_val])
-            LDN_hist.append(hh)
+        imgReg = np.array(imgDesc[s]['fea'])
+        binVec = np.array(options['binVec'][s])
+        # Vectorized counting for each bin value
+        hist, _ = np.histogram(imgReg, bins=np.append(binVec, np.inf))
+        LDN_hist.extend(hist)
     LDN_hist = np.array(LDN_hist)
+
     if 'mode' in options and options['mode'] == 'nh':
         LDN_hist = LDN_hist / np.sum(LDN_hist)
 

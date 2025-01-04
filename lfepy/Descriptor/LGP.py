@@ -59,8 +59,8 @@ def LGP(image, **kwargs):
 
     # Compute LGP histogram
     LGP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LGP_hist[i] = np.sum([imgDesc == bin_val])
+    LGP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LGP_hist = LGP_hist / np.sum(LGP_hist)
 

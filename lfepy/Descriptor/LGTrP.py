@@ -59,8 +59,8 @@ def LGTrP(image, **kwargs):
 
     # Compute LGTrP histogram
     LGTrP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LGTrP_hist[i] = np.sum([imgDesc == bin_val])
+    LGTrP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LGTrP_hist = LGTrP_hist / np.sum(LGTrP_hist)
 

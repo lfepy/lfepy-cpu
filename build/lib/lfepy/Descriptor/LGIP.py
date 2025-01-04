@@ -90,8 +90,8 @@ def LGIP(image, **kwargs):
 
     # Compute LGIP histogram
     LGIP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LGIP_hist[i] = np.sum([imgDesc == bin_val])
+    LGIP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LGIP_hist = LGIP_hist / np.sum(LGIP_hist)
 

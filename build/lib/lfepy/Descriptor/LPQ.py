@@ -56,8 +56,8 @@ def LPQ(image, **kwargs):
 
     # Compute LPQ histogram
     LPQ_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LPQ_hist[i] = np.sum([imgDesc == bin_val])
+    LPQ_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LPQ_hist = LPQ_hist / np.sum(LPQ_hist)
 

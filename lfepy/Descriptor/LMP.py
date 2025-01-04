@@ -70,8 +70,8 @@ def LMP(image, **kwargs):
 
     # Compute LMP histogram
     LMP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LMP_hist[i] = np.sum([imgDesc == bin_val])
+    LMP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LMP_hist = LMP_hist / np.sum(LMP_hist)
 

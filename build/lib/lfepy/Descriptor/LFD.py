@@ -72,11 +72,13 @@ def LFD(image, **kwargs):
     # Compute LFD histogram
     LFD_hist = []
     for s in range(len(imgDesc)):
-        imgReg = imgDesc[s]['fea']
-        for i, bin_val in enumerate(options['binVec'][s]):
-            hh = np.sum([imgReg == bin_val])
-            LFD_hist.append(hh)
+        imgReg = np.array(imgDesc[s]['fea'])
+        binVec = np.array(options['binVec'][s])
+        # Vectorized counting for each bin value
+        hist, _ = np.histogram(imgReg, bins=np.append(binVec, np.inf))
+        LFD_hist.extend(hist)
     LFD_hist = np.array(LFD_hist)
+
     if 'mode' in options and options['mode'] == 'nh':
         LFD_hist = LFD_hist / np.sum(LFD_hist)
 

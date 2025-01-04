@@ -87,8 +87,11 @@ def LDiPv(image, **kwargs):
 
     # Compute LDiPv histogram
     LDiPv_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LDiPv_hist[i] = np.sum(options['weight'][imgDesc == bin_val])
+    imgDesc_flat = np.ravel(imgDesc)
+    weight_flat = np.ravel(options['weight'])
+    bin_indices = np.searchsorted(options['binVec'], imgDesc_flat)
+    LDiPv_hist = np.bincount(bin_indices, weights=weight_flat, minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LDiPv_hist = LDiPv_hist / np.sum(LDiPv_hist)
 

@@ -93,8 +93,8 @@ def GDP(image, **kwargs):
 
     # Compute GDP histogram
     GDP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        GDP_hist[i] = np.sum([imgDesc == bin_val])
+    GDP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         GDP_hist = GDP_hist / np.sum(GDP_hist)
 

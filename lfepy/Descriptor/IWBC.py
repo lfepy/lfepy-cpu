@@ -146,11 +146,13 @@ def IWBC(image, **kwargs):
     # Compute IWBC histogram
     IWBC_hist = []
     for s in range(len(imgDesc)):
-        imgReg = imgDesc[s]['fea']
-        for i, bin_val in enumerate(options['binVec'][s]):
-            hh = np.sum([imgReg == bin_val])
-            IWBC_hist.append(hh)
+        imgReg = np.array(imgDesc[s]['fea'])
+        binVec = np.array(options['binVec'][s])
+        # Vectorized counting for each bin value
+        hist, _ = np.histogram(imgReg, bins=np.append(binVec, np.inf))
+        IWBC_hist.extend(hist)
     IWBC_hist = np.array(IWBC_hist)
+
     if 'mode' in options and options['mode'] == 'nh':
         IWBC_hist = IWBC_hist / np.sum(IWBC_hist)
 

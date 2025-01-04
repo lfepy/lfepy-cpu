@@ -68,8 +68,8 @@ def LTrP(image, **kwargs):
 
     # Compute LTrP histogram
     LTrP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        LTrP_hist[i] = np.sum([imgDesc == bin_val])
+    LTrP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         LTrP_hist = LTrP_hist / np.sum(LTrP_hist)
 

@@ -57,16 +57,17 @@ def MBP(image, **kwargs):
         ImgIntensity[:, n] = x_slice.reshape(-1)
 
     medianMat = np.median(ImgIntensity, axis=1)
-    MBP = np.double(ImgIntensity > medianMat.reshape(-1, 1))
-    imgDesc = np.array([int(''.join(map(str, row.astype(np.uint8))), 2) for row in MBP]).reshape(rSize, cSize)
+    MBP = (ImgIntensity > medianMat.reshape(-1, 1))
+
+    imgDesc = np.dot(MBP.astype(np.uint8), 1 << np.arange(MBP.shape[1] - 1, -1, -1)).reshape(rSize, cSize)
 
     # Set bin vectors
     options['binVec'] = np.arange(256)
 
     # Compute MBP histogram
     MBP_hist = np.zeros(len(options['binVec']))
-    for i, bin_val in enumerate(options['binVec']):
-        MBP_hist[i] = np.sum([imgDesc == bin_val])
+    MBP_hist = np.bincount(np.searchsorted(options['binVec'], np.ravel(imgDesc)), minlength=len(options['binVec']))
+
     if 'mode' in options and options['mode'] == 'nh':
         MBP_hist = MBP_hist / np.sum(MBP_hist)
 
