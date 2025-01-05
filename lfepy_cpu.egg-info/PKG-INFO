@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
-Name: lfepy
-Version: 1.0.9
+Name: lfepy-cpu
+Version: 1.0.0
 Summary: lfepy is a Python package for local feature extraction.
-Home-page: https://github.com/lfepy/lfepy
-Author: Dr. Prof. Khalid M. Hosny, BSc. Mahmoud A. Mohamed, Dr. Essa E. Almazroei
+Home-page: https://github.com/lfepy/lfepy-cpu
+Author: Dr. Prof. Khalid M. Hosny, M.Sc. Mahmoud A. Mohamed
 Author-email: lfepy@gmail.com
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
@@ -15,7 +15,7 @@ Requires-Dist: numpy>=1.26.4
 Requires-Dist: scipy>=1.13.0
 Requires-Dist: scikit-image>=0.23.2
 
-# lfepy
+# lfepy-cpu
 
 **Local Feature Extractors for Python** is a Python package for local descriptors. It provides feature extraction from grayscale images, facilitating AI tasks like object detection, facial recognition, and classification.
 
@@ -31,7 +31,7 @@ Requires-Dist: scikit-image>=0.23.2
 
 ## Overview
 
-**lfepy** is a Python package for local feature extraction. It contains 27 different descriptors that can be used for various tasks in computer vision and image processing.
+**lfepy-cpu** is a CPU-based Python package for local feature extraction. It contains 27 different descriptors that can be used for various tasks in computer vision and image processing.
 
 ## Features
 
@@ -51,7 +51,11 @@ Requires-Dist: scikit-image>=0.23.2
 To install lfepy, use the following command:
 
 ```bash
-pip install lfepy
+pip install lfepy-cpu
+```
+or
+```bash
+pip install git+https://github.com/lfepy/lfepy-cpu.git
 ```
 ## Usage
 Basic Example

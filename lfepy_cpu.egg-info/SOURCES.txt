@@ -2,11 +2,6 @@ LICENSE.md
 README.md
 setup.py
 lfepy/__init__.py
-lfepy.egg-info/PKG-INFO
-lfepy.egg-info/SOURCES.txt
-lfepy.egg-info/dependency_links.txt
-lfepy.egg-info/requires.txt
-lfepy.egg-info/top_level.txt
 lfepy/Descriptor/BPPC.py
 lfepy/Descriptor/GDP.py
 lfepy/Descriptor/GDP2.py
@@ -86,6 +81,11 @@ lfepy/Validator/validate_t_LTeP.py
 lfepy/Validator/validate_t_MTP.py
 lfepy/Validator/validate_uniformLBP.py
 lfepy/Validator/validate_windowSize.py
+lfepy_cpu.egg-info/PKG-INFO
+lfepy_cpu.egg-info/SOURCES.txt
+lfepy_cpu.egg-info/dependency_links.txt
+lfepy_cpu.egg-info/requires.txt
+lfepy_cpu.egg-info/top_level.txt
 tests/test_BPPC.py
 tests/test_GDP.py
 tests/test_GDP2.py
