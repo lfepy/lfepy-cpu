@@ -42,51 +42,52 @@ def LGIP(image, **kwargs):
     options = validate_kwargs(**kwargs)
     options = validate_mode(options)
 
-    # Get image dimensions
     r, c = image.shape
 
-    # Compute LGIP components
-    v000 = np.double(-image[1:-3, 2:-2] + image[1:-3, 3:-1] - 2 * image[2:-2, 2:-2] +
-                     2 * image[2:-2, 3:-1] - image[3:-1, 2:-2] + image[3:-1, 3:-1] > 0)
-    v001 = np.double(-image[1:-3, 1:-3] + image[:-4, 2:-2] - 2 * image[2:-2, 2:-2] +
-                     2 * image[1:-3, 3:-1] - image[3:-1, 3:-1] + image[2:-2, 4:])
-    v010 = np.double(-image[2:-2, 1:-3] + image[1:-3, 1:-3] - 2 * image[2:-2, 2:-2] +
-                     2 * image[1:-3, 2:-2] - image[2:-2, 3:-1] + image[1:-3, 3:-1] > 0)
-    v011 = np.double(-image[3:-1, 1:-3] + image[2:-2, 0:-4] - 2 * image[2:-2, 2:-2] +
-                     2 * image[1:-3, 1:-3] - image[1:-3, 3:-1] + image[0:-4, 2:-2] > 0)
-    v100 = np.double(-image[1:-3, 2:-2] + image[1:-3, 1:-3] - 2 * image[2:-2, 2:-2] +
-                     2 * image[2:-2, 1:-3] - image[3:-1, 2:-2] + image[3:-1, 1:-3] > 0)
-    v101 = np.double(-image[1:-3, 1:-3] + image[2:-2, 0:-4] - 2 * image[2:-2, 2:-2] +
-                     2 * image[3:-1, 1:-3] - image[3:-1, 3:-1] + image[4:, 2:-2] > 0)
-    v110 = np.double(-image[2:-2, 1:-3] + image[3:-1, 1:-3] - 2 * image[2:-2, 2:-2] +
-                     2 * image[3:-1, 2:-2] - image[2:-2, 3:-1] + image[3:-1, 3:-1] > 0)
-    v111 = np.double(-image[3:-1, 1:-3] + image[4:, 2:-2] - 2 * image[2:-2, 2:-2] +
-                     2 * image[3:-1, 3:-1] - image[1:-3, 3:-1] + image[2:-2, 4:] > 0)
+    # Compute gradient patterns
+    v000 = np.double(-image[1:-3, 2:-2] + image[1:-3, 3:-1] - 2*image[2:-2, 2:-2] +
+                     2*image[2:-2, 3:-1] - image[3:-1, 2:-2] + image[3:-1, 3:-1] > 0)
+    v001 = np.double(-image[1:-3, 1:-3] + image[0:-4, 2:-2] - 2*image[2:-2, 2:-2] +
+                     2*image[1:-3, 3:-1] - image[3:-1, 3:-1] + image[2:-2, 4:] > 0)
+    v010 = np.double(-image[2:-2, 1:-3] + image[1:-3, 1:-3] - 2*image[2:-2, 2:-2] +
+                     2*image[1:-3, 2:-2] - image[2:-2, 3:-1] + image[1:-3, 3:-1] > 0)
+    v011 = np.double(-image[3:-1, 1:-3] + image[2:-2, 0:-4] - 2*image[2:-2, 2:-2] +
+                     2*image[1:-3, 1:-3] - image[1:-3, 3:-1] + image[0:-4, 2:-2] > 0)
+    v100 = np.double(-image[1:-3, 2:-2] + image[1:-3, 1:-3] - 2*image[2:-2, 2:-2] +
+                     2*image[2:-2, 1:-3] - image[3:-1, 2:-2] + image[3:-1, 1:-3] > 0)
+    v101 = np.double(-image[1:-3, 1:-3] + image[2:-2, 0:-4] - 2*image[2:-2, 2:-2] +
+                     2*image[3:-1, 1:-3] - image[3:-1, 3:-1] + image[4:, 2:-2] > 0)
+    v110 = np.double(-image[2:-2, 1:-3] + image[3:-1, 1:-3] - 2*image[2:-2, 2:-2] +
+                     2*image[3:-1, 2:-2] - image[2:-2, 3:-1] + image[3:-1, 3:-1] > 0)
+    v111 = np.double(-image[3:-1, 1:-3] + image[4:, 2:-2] - 2*image[2:-2, 2:-2] +
+                     2*image[3:-1, 3:-1] - image[1:-3, 3:-1] + image[2:-2, 4:] > 0)
 
-    # Compute Orientation Tensor Vectors (OTV)
-    OTVx = np.ravel(v000 + v001 + v111 - v011 - v100 - v101)
-    OTVy = np.ravel(v001 + v010 + v011 - v101 - v110 - v111)
+    # Compute OTVx and OTVy
+    OTVx = (v000 + v001 + v111 - v011 - v100 - v101).flatten()
+    OTVy = (v001 + v010 + v011 - v101 - v110 - v111).flatten()
 
     # Define pattern mask
-    patternMask = np.array([[-1, -1, 30, 29, 28, -1, -1],
-                            [-1, 16, 15, 14, 13, 12, -1],
-                            [31, 17, 4, 3, 2, 11, 27],
-                            [32, 18, 5, 0, 1, 10, 26],
-                            [33, 19, 6, 7, 8, 9, 25],
-                            [-1, 20, 21, 22, 23, 24, -1],
-                            [-1, -1, 34, 35, 36, -1, -1]])
+    patternMask = np.array([
+        [-1, -1, 30, 29, 28, -1, -1],
+        [-1, 16, 15, 14, 13, 12, -1],
+        [31, 17, 4, 3, 2, 11, 27],
+        [32, 18, 5, 0, 1, 10, 26],
+        [33, 19, 6, 7, 8, 9, 25],
+        [-1, 20, 21, 22, 23, 24, -1],
+        [-1, -1, 34, 35, 36, -1, -1]
+    ])
 
-    # Clip OTV values to be within the pattern mask range
-    OTVx_clipped = np.clip(OTVx + 4, 0, 6).astype(int)
-    OTVy_clipped = np.clip(OTVy + 4, 0, 6).astype(int)
+    # Clip OTV values to be within the pattern mask range and convert to integers
+    OTVx_clipped = np.clip(OTVx + 4, 0, 6).astype(np.int32)
+    OTVy_clipped = np.clip(OTVy + 4, 0, 6).astype(np.int32)
 
-    # Map the OTV values to pattern mask indices
-    idx = np.ravel_multi_index((OTVx_clipped, OTVy_clipped), patternMask.shape)
-    LGIP = patternMask.flat[idx]
-    imgDesc = np.reshape(LGIP, (r - 4, c - 4))
+    # Compute indices and get LGIP values
+    idx = np.ravel_multi_index((OTVx_clipped, OTVy_clipped), (7, 7))
+    LGIP = patternMask.flatten()[idx]
+    imgDesc = LGIP.reshape(r-4, c-4)
 
     # Set bin vectors
-    options['binVec'] = np.arange(0, 37)
+    options['binVec'] = np.arange(37)  # 0 to 36 inclusive
 
     # Compute LGIP histogram
     LGIP_hist = np.zeros(len(options['binVec']))
