@@ -31,7 +31,7 @@ __all__ = ["BPPC", "GDP", "GDP2", "GLTP", "IWBC", "LAP", "LBP", "LDiP", "LDiPv",
            "LGIP", "LGP", "LGTrP", "LMP", "LPQ", "LTeP", "LTrP", "MBC", "MBP", "MRELBP", "MTP", "PHOG", "WLD"]
 
 # __init__.py in the main package
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __author__ = ["Dr. Prof. Khalid M. Hosny", "M.Sc. Mahmoud A. Mohamed"]
 __license__ = 'MIT'
 

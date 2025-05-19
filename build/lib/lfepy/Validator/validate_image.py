@@ -12,6 +12,6 @@ def validate_image(image):
 
     # Convert to grayscale if needed
     if len(image.shape) == 3:
-        image = np.dot(image[..., :3], [0.2989, 0.5870, 0.1140])
+        image = np.dot(image[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
-    return image
+    return image.astype(np.float64)
