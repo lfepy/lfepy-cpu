@@ -34,10 +34,6 @@
 To install lfepy, use the following command:
 
 ```bash
-pip install lfepy-cpu
-```
-or
-```bash
 pip install git+https://github.com/lfepy/lfepy-cpu.git
 ```
 ## Usage
