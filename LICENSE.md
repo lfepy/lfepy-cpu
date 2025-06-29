@@ -14,8 +14,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 2. If the Software, or any part of it, is used for academic research that results in a publication, the following paper **must be cited**:
    - Cigdem Turan and Kin-Man Lam, “Histogram-based Local Descriptors for Facial Expression Recognition (FER): A comprehensive Study,”
      Journal of Visual Communication and Image Representation, 2018. DOI: 10.1016/j.jvcir.2018.05.024
-   - Mohammed, M.A. and Hosny, K.M., “LfePy: a Python package for local feature extraction with CPU and GPU compatibility,”
-     Journal of Real-Time Image Processing, vol. 22, p. 130, 2025. DOI: 10.1007/s11554-025-01705-y
+   - Mohammed, M.A. and Hosny, K.M., “LfePy: a Python package for local feature extraction with CPU and GPU compatibility,” Journal of Real-Time Image Processing, vol. 22, p. 130, 2025. DOI: 10.1007/s11554-025-01705-y
 
 3. Some descriptor functions may require additional citations. Please refer to the relevant source code comments or documentation for details.
 
